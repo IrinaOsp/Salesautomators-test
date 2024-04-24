@@ -3,9 +3,20 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import initialValues from "@/data/formikData";
-import phoneRegExp from "@/data/data";
+import { phoneRegExp } from "@/data/data";
+import { useEffect } from "react";
+import AppExtensionsSDK from "@pipedrive/app-extensions-sdk";
 
 export default function Form() {
+  useEffect(() => {
+    const getSDK = async () => {
+      const sdk = await new AppExtensionsSDK({
+        identifier: process.env.ID,
+      }).initialize();
+    };
+
+    getSDK();
+  }, []);
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@pipedrive/app-extensions-sdk": "^0.10.1",
     "formik": "^2.4.5",
     "next": "14.2.2",
     "react": "^18",

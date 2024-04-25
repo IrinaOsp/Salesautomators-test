@@ -5,14 +5,32 @@ import * as Yup from "yup";
 import initialValues from "@/data/formikData";
 import { phoneRegExp } from "@/data/data";
 import { useEffect } from "react";
-import AppExtensionsSDK from "@pipedrive/app-extensions-sdk";
+import AppExtensionsSDK, {
+  Command,
+  Modal,
+} from "@pipedrive/app-extensions-sdk";
 
 export default function Form() {
   useEffect(() => {
     const getSDK = async () => {
-      const sdk = await new AppExtensionsSDK({
-        identifier: process.env.ID,
-      }).initialize();
+      try {
+        console.log("start", process.env.NEXT_PUBLIC_ID);
+        const sdk = await new AppExtensionsSDK({
+          identifier: process.env.NEXT_PUBLIC_ID,
+        }).initialize();
+        console.log(sdk);
+        const { token } = await sdk.execute(Command.GET_SIGNED_TOKEN);
+        console.log(token);
+        const { status } = await sdk.execute(Command.OPEN_MODAL, {
+          type: Modal.CUSTOM_MODAL,
+          action_id: process.env.NEXT_PUBLIC_ID as string,
+          data: {
+            item: "xyz",
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     getSDK();
